@@ -7,19 +7,19 @@ encoding Geohashes_ to and from latitude and longitude coordinates.
 
 Example::
 
-  >>> import Geohash
-  >>> print 'Geohash for 42.6, -5.6:', Geohash.encode(42.6, -5.6)
+  >>> import geohash2
+  >>> print ('Geohash for 42.6, -5.6:', geohash2.encode(42.6, -5.6))
   Geohash for 42.6, -5.6: ezs42e44yx96
 
 You can specify an arbitrary precision when encoding. The precision
 determines the number of characters in the Geohash::
 
-  >>> print 'Geohash for 42.6, -5.6:', Geohash.encode(42.6, -5.6, precision=5)
+  >>> print ('Geohash for 42.6, -5.6:', geohash2.encode(42.6, -5.6, precision=5))
   Geohash for 42.6, -5.6: ezs42
 
 Decoding a Geohash returns a (latitude, longitude) tuple::
 
-  >>> print 'Coordinate for Geohash ezs42:', Geohash.decode('ezs42')
+  >>> print ('Coordinate for Geohash ezs42:', geohash2.decode('ezs42'))
   Coordinate for Geohash ezs42: ('42.6', '-5.6')
 
 The Geohash module also provides exact decoding with error margin
@@ -27,7 +27,7 @@ results. The decode_exactly function returns a tuple of four float
 values; latitude, longitude, latitude error margin, longitude error
 margin::
 
-  >>> print 'Exact coordinate for Geohash ezs42:\n', Geohash.decode_exactly('ezs42')
+  >>> print ('Exact coordinate for Geohash ezs42:\n', geohash2.decode_exactly('ezs42'))
   Exact coordinate for Geohash ezs42:
   (42.60498046875, -5.60302734375, 0.02197265625, 0.02197265625)
 
@@ -41,7 +41,9 @@ respectively.
 Download
 ========
 
-Geohash is available for download from github_ and from the `Python Package Index`_.
+geohash2 is available for download from github_ and from the `Python Package Index`_::
+
+    pip install geohash2
 
 License
 =======
@@ -78,7 +80,6 @@ Keywords
 Geohash, GIS, latitude, longitude, encode, decode, Galileo, GPS, WGS84, coordinates, geotagging.
 
 .. _Geohashes: http://en.wikipedia.org/wiki/Geohash
-.. _github: https://github.com/vinsci/geohash/archive/master.zip
 .. _Python package index: http://pypi.python.org
 .. _Geohash: http://en.wikipedia.org/wiki/Geohash
 
