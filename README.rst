@@ -2,6 +2,12 @@
 Geohash
 =======
 
+
+WARNING: This is a modified version of a geohash algorithm.
+It's bit resolution can be altered to change how quickly the grid coverges.
+Hashes generated with bit resolution lower than 5 are not compatible with standard geohashes.
+
+
 Geohash is a Python module that provides functions for decoding and
 encoding Geohashes_ to and from latitude and longitude coordinates.
 

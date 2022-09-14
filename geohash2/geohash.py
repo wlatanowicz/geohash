@@ -29,7 +29,7 @@ for i in range(len(__base32)):
     __decodemap[__base32[i]] = i
 del i
 
-def decode_exactly(geohash):
+def decode_exactly(geohash, bits=5):
     """
     Decode the geohash to its exact values, including the error
     margins of the result.  Returns four float values: latitude,
@@ -37,12 +37,13 @@ def decode_exactly(geohash):
     number) and the plus/minus error for longitude (as a positive
     number).
     """
+    bit_list = [2 ** (n - 1) for n in range(bits, 0, -1)]
     lat_interval, lon_interval = (-90.0, 90.0), (-180.0, 180.0)
     lat_err, lon_err = 90.0, 180.0
     is_even = True
     for c in geohash:
         cd = __decodemap[c]
-        for mask in [16, 8, 4, 2, 1]:
+        for mask in bit_list:
             if is_even: # adds longitude info
                 lon_err /= 2
                 if cd & mask:
@@ -60,12 +61,12 @@ def decode_exactly(geohash):
     lon = (lon_interval[0] + lon_interval[1]) / 2
     return lat, lon, lat_err, lon_err
 
-def decode(geohash):
+def decode(geohash, bits=5):
     """
     Decode geohash, returning two strings with latitude and longitude
     containing only relevant digits and with trailing zeroes removed.
     """
-    lat, lon, lat_err, lon_err = decode_exactly(geohash)
+    lat, lon, lat_err, lon_err = decode_exactly(geohash, bits=bits)
     # Format to the number of decimals that are known
     lats = "%.*f" % (max(1, int(round(-log10(lat_err)))) - 1, lat)
     lons = "%.*f" % (max(1, int(round(-log10(lon_err)))) - 1, lon)
@@ -73,14 +74,15 @@ def decode(geohash):
     if '.' in lons: lons = lons.rstrip('0')
     return lats, lons
 
-def encode(latitude, longitude, precision=12):
+def encode(latitude, longitude, precision=12, bits=5):
     """
     Encode a position given in float arguments latitude, longitude to
     a geohash which will have the character count precision.
     """
+    bit_list = [2 ** (n - 1) for n in range(bits, 0, -1)]
     lat_interval, lon_interval = (-90.0, 90.0), (-180.0, 180.0)
     geohash = []
-    bits = [ 16, 8, 4, 2, 1 ]
+    bits = bit_list
     bit = 0
     ch = 0
     even = True
@@ -100,7 +102,7 @@ def encode(latitude, longitude, precision=12):
             else:
                 lat_interval = (lat_interval[0], mid)
         even = not even
-        if bit < 4:
+        if bit < bits - 1:
             bit += 1
         else:
             geohash += __base32[ch]
